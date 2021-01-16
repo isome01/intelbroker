@@ -1,2 +1,2 @@
 # Intelbroker
-This is a git setup for "criminal-profiler" software
+This is a git setup for "data-profiler" software
