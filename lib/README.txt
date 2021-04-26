@@ -1,0 +1,1 @@
+Possibly templates for the scraper?

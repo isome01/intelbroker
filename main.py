@@ -1,3 +1,12 @@
-from locator.geolocator import geoLocator
+from bin.scraper import Omni
 
-geoLocator('https://whatismyipadress.com')
+
+if __name__ == '__main__':
+    Omni(
+        base_url='https://www.dallascounty.org/jaillookup/searchByName',
+        specs={
+            'pagination': True,
+            'pages_element': '',
+            'error_message': 'No records were found using the search criteria provided'
+        }
+    )

@@ -1,0 +1,104 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+import asyncio
+import time
+
+
+class Omni:
+
+    def __init__(self, base_url, specs, **attrs):
+        try:
+            self.scraper_usability = True
+            self._driver_path = attrs.get('driver_path', r'C:/Program Files (x86)/chromedriver/chromedriver.exe')
+            self._base_url = base_url
+
+            options = Options()
+            options.add_argument('--headless')
+            self._client = webdriver.Chrome(
+                executable_path=self._driver_path,
+                options=options
+            )
+        except Exception as e:
+            print(e)
+            self.scraper_usability = False
+        # from here, algorithm should start
+        finally:
+            self._exec_ops_from_specs()
+
+    def __del__(self):
+        self._exit()
+
+    def _exit(self):
+        try:
+            self._client.quit()
+            self._client.close()
+
+        except Exception as e:
+            print(e)
+
+    def go_to(self, url=''):
+        """ Adhoc 'get' function for our scraper
+        :param url:
+        :return: bool
+        """
+        exit_success = True
+        try:
+            self._client.get(f'{self._base_url}{url}')
+            self._busy_wait()
+        except Exception as e:
+            exit_success = False
+            print(e)
+
+        return exit_success
+
+    async def _busy_wait(self):
+        exit_success = True
+        try:
+            while 1:
+                state = self._client.execute_script('return document.readyState === "complete"')
+                if state:
+                    # print('waiting completed.')
+                    break
+                # print(f'still waiting; current state {state}.')
+        except Exception as e:
+            print(e)
+            exit_success = False
+
+        return exit_success
+
+    def busy_wait(self):
+        loop = asyncio.get_event_loop()
+        success = loop.run_until_complete(self._busy_wait())
+        return success
+
+    def _search_by(self):
+        """
+        Adhoc search by name or
+        :return:
+        """
+
+    def click_on(self, elements):
+        success = False
+        node = None
+        for e in elements:
+            if success:
+                break
+            try:
+                e.click()
+                success = True
+                node = e
+            except Exception as e:
+                print(e)
+
+        return node
+
+    def _exec_ops_from_specs(self):
+        """
+        core function for scraper
+        :return: bool
+        """
+        if self.scraper_usability:
+            pass
+        else:
+            pass
