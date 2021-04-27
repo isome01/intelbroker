@@ -13,12 +13,8 @@ class Omni:
             self._driver_path = attrs.get('driver_path', r'C:/Program Files (x86)/chromedriver/chromedriver.exe')
             self._base_url = base_url
 
-            options = Options()
-            options.add_argument('--headless')
-            self._client = webdriver.Chrome(
-                executable_path=self._driver_path,
-                options=options
-            )
+            self._initialize_client()
+
         except Exception as e:
             print(e)
             self.scraper_usability = False
@@ -28,6 +24,12 @@ class Omni:
 
     def __del__(self):
         self._exit()
+
+    def _initialize_client(self):
+        loop = asyncio.get_event_loop()
+        success = loop.run_until_complete(self._await_init_client())
+
+        return success
 
     def _exit(self):
         try:
@@ -51,6 +53,22 @@ class Omni:
             print(e)
 
         return exit_success
+
+    async def _await_init_client(self):
+        success = True
+        try:
+            options = Options()
+            print('Going...')
+            options.add_argument('--headless')
+            self._client = webdriver.Chrome(
+                executable_path=self._driver_path,
+                options=options
+            )
+        except Exception as e:
+            success = False
+            print(e)
+        finally:
+            return success
 
     async def _busy_wait(self):
         exit_success = True
@@ -99,6 +117,7 @@ class Omni:
         :return: bool
         """
         if self.scraper_usability:
-            pass
+            print('Scraper is usable')
+            self.go_to(self._base_url)
         else:
-            pass
+            print('Scraper is NOT usable')
