@@ -4,7 +4,7 @@ This is a git setup for "data-profiler" software
 
 # Technologies so far:
  - Python 3.8 (no greater or less: at least within the scope 3.8.x)
- - Chrome driver: should downlaod up-to-date version of your browser
+ - Chrome driver: should download up-to-date version of your browser
    (https://chromedriver.chromium.org/downloads)
 
 # Setup:
