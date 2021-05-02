@@ -28,6 +28,7 @@ class Omni:
     def _initialize_client(self):
         loop = asyncio.get_event_loop()
         success = loop.run_until_complete(self._await_init_client())
+        loop.close()
 
         return success
 
@@ -59,14 +60,13 @@ class Omni:
         try:
             options = Options()
             print('Going...')
-            options.add_argument('--headless')
             self._client = webdriver.Chrome(
                 executable_path=self._driver_path,
                 options=options
             )
         except Exception as e:
             success = False
-            print(e)
+            print(f'Error: {e}')
         finally:
             return success
 
@@ -88,6 +88,7 @@ class Omni:
     def busy_wait(self):
         loop = asyncio.get_event_loop()
         success = loop.run_until_complete(self._busy_wait())
+        loop.close()
         return success
 
     def _search_by(self):
