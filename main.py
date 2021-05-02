@@ -2,7 +2,7 @@ from bin.scraper import Omni
 
 
 if __name__ == '__main__':
-    Omni(
+    scraper = Omni(
         base_url='https://www.dallascounty.org/jaillookup/searchByName',
         specs={
             'pagination': True,
