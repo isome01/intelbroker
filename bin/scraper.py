@@ -12,6 +12,7 @@ class Omni:
             self.scraper_usability = True
             self._driver_path = attrs.get('driver_path', r'C:/Program Files (x86)/chromedriver/chromedriver.exe')
             self._base_url = base_url
+            self._specs = specs
 
             self._initialize_client()
 
@@ -120,5 +121,24 @@ class Omni:
         if self.scraper_usability:
             print('Scraper is usable')
             self.go_to(self._base_url)
+            self._fill_out_search_fields()
+            self._get_links()
         else:
             print('Scraper is NOT usable')
+
+    def _get_links(self):
+        print("Getting links...")
+
+    def _fill_out_search_fields(self):
+        fields = self._specs['fields']
+        
+        for key in fields:
+            if(fields[key] == 'input'):
+                # TODO: Loop through alphabet
+                self._client.find_element_by_xpath("//" + fields[key] + "[@name='" + key +"']").send_keys('a')
+            else:
+                # TODO: will need to loop through options eventually
+                self._client.find_element_by_xpath("//" + fields[key] + "[@name='" + key +"']/option[2]").click()
+
+        self._client.find_element_by_xpath("//input[@value='" + self._specs['buttonText'] + "']").click()
+        # time.sleep(2)
